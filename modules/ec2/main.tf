@@ -1,8 +1,6 @@
 provider "aws" {
    region = "us-east-2"
 }
-
-## Belwo output statement is to expose ASG Launch config through module
 ## This is a way to return values from a modules
 output "k8s_public_ip" {
   value = "${aws_instance.cZServers.*.public_ip}"
@@ -16,23 +14,11 @@ resource "aws_instance" "cZServers" {
   instance_type = var.instance_type
   count = var.instance_count
   vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
+  subnet_id = var.subnet_id
   tags = {
     Name  = "${var.instance_tags}-${count.index + 1}"
   }
 
   key_name = var.key_name
 
-#  user_data = "${var.user_data}"
-  
- # provisioner "file" {
- #   source      = "/home/vidya/srimul.pem"
- #   destination = "/tmp/srimul.pem"
- # }
- # connection {
- #   host     = self.public_ip
- #   type     = "ssh"
- #   user     = "ubuntu"
- #   password = ""
- #   private_key = "${file("~/srimul.pem")}"
-#}
 }
