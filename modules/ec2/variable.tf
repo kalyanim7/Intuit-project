@@ -5,7 +5,9 @@ variable "amiid" {
   type = "string"
   description = "You may added more regions if you want"
 }
-
+variable "subnet_id" {
+  type="string"
+  }
 variable "instance_count" {
  type = number
 }
