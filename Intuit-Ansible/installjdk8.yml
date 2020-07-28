@@ -1,0 +1,15 @@
+- hosts: all
+  become: yes
+  become_user: ubuntu
+  tasks:
+    - name: Update APT package manager repositories
+      apt:
+        update_cache: yes 
+      
+    - name: Install openJDK Java
+      apt:
+         name: "{{ item }}"
+         state: present
+         with_items:
+              openjdk-8-jdk
+      
