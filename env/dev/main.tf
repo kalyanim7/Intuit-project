@@ -43,6 +43,7 @@ module "k8sMaster" {
   instance_type = var.instance_type
   instance_count = var.instance_count
   vpc_security_group_ids = aws_security_group.allow_ssh.id
+  subnet_id = var.websubnet
   instance_tags ="${element(var.instance_tags,0)}"
   
   key_name = "${var.key_name}"
@@ -60,6 +61,7 @@ module "k8shost" {
   instance_type = var.hostinstance_type
   instance_count = var.hostinstance_count
   vpc_security_group_ids = aws_security_group.allow_ssh.id
+  subnet_id = var.appsubnet
   instance_tags ="${element(var.instance_tags,1)}"
   key_name = "${var.key_name}"
 
