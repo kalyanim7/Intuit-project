@@ -5,44 +5,44 @@ provider "aws" {
 terraform {
   backend "s3" {
     bucket = "clisrimul"
-    key    = "k8smod/terraform.tfstate"
+    key    = "Intuit-project/terraform.tfstate"
     region = "us-east-2"
   }
 }
-#resource "aws_security_group" "allow_ssh" {
-#  name = "sg_Ansible"
-#  description = "Allow ssh inbound traffic"
-#  ingress {
-#      from_port = 22
-#      to_port = 22
-#      protocol = "tcp"
-#      cidr_blocks = ["0.0.0.0/0"]
-#  }
-#  ingress {
-#      from_port = 443
-#      to_port = 443
-#      protocol = "tcp"
-#      cidr_blocks = ["0.0.0.0/0"]
-#  }
-#  ingress {
-#      from_port = 80
-#      to_port = 80
-#      protocol = "tcp"
-#      cidr_blocks = ["0.0.0.0/0"]
-# }
-#  egress {
-#    from_port   = 0
-#    to_port     = 0
-#    protocol    = "-1"
-#    cidr_blocks = ["0.0.0.0/0"]
-#  }
-#}
+resource "aws_security_group" "allow_ssh" {
+  name = "sg_Ansible"
+  description = "Allow ssh inbound traffic"
+  ingress {
+      from_port = 22
+      to_port = 22
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+      from_port = 443
+      to_port = 443
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+      from_port = 80
+      to_port = 80
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+ }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
 module "k8sMaster" {
   source = "../../modules/ec2"
   amiid = "${lookup(var.amiid, var.region)}"
   instance_type = var.instance_type
   instance_count = var.instance_count
-  vpc_security_group_ids = var.security_group
+  vpc_security_group_ids = aws_security_group.allow_ssh.id
   instance_tags ="${element(var.instance_tags,0)}"
   
   key_name = "${var.key_name}"
@@ -59,7 +59,7 @@ module "k8shost" {
   amiid = "${lookup(var.amiid, var.region)}"
   instance_type = var.hostinstance_type
   instance_count = var.hostinstance_count
-  vpc_security_group_ids = var.security_group
+  vpc_security_group_ids = aws_security_group.allow_ssh.id
   instance_tags ="${element(var.instance_tags,1)}"
   key_name = "${var.key_name}"
 
