@@ -16,7 +16,7 @@ default = "1"
 }
 #k8s Master instance type
 variable "instance_type" {
-  default = "t3.medium"
+  default = "t2.micro"
 }
 variable "key_name" {
   default = "srimul"
@@ -25,7 +25,7 @@ variable "key_name" {
 
 variable "instance_tags" {
   type = "list"
-  default = ["k8s-Master", "k8s-Worker"]
+  default = ["Nginx-Webserver", "Tomcat-Appserver"]
 }
 variable "security_group" {
   default = "sg-0aaa3aac86f3cdc08"
@@ -33,7 +33,7 @@ variable "security_group" {
 }
 # Host variables
 variable "hostinstance_count" {
-default = "2"
+default = "1"
 }
 variable "hostinstance_type" {
   default = "t2.micro"
