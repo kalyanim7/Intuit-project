@@ -10,9 +10,9 @@ variable "amiid" {
   }
   description = "You may added more regions if you want"
 }
-#K8s Master instance count
+#Webserver instance count
 variable "instance_count" {
-default = "1"
+default = "2"
 }
 #k8s Master instance type
 variable "instance_type" {
@@ -37,7 +37,7 @@ variable "security_group" {
 variable "websubnet" {
   default = "subnet-0d5acf536cda4d943"
   }
-# Host variables
+# Appserver variables
 variable "appsubnet" {
   default= "subnet-0dbbd4d635dd7cb21"
   }
