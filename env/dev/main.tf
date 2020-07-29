@@ -4,7 +4,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "clisrimul"
+    bucket = "intuitproject"
     key    = "Intuit-project/terraform.tfstate"
     region = "us-east-2"
   }
@@ -88,9 +88,6 @@ provisioner "local-exec" {
  command = "echo '${element(module.webserver.server_public_ip.*,0)}' >> hosts1"
  }
 provisioner "local-exec" {
- command = "echo '${element(module.webserver.server_public_ip.*,1)}' >> hosts1"
- }
-provisioner "local-exec" {
     command=  "echo 'Appserver' >> hosts1"
 }
 provisioner "local-exec" {
@@ -98,9 +95,6 @@ provisioner "local-exec" {
  }
 provisioner "local-exec" {
  command = "aws ec2 wait instance-status-ok --instance-ids '${element(module.Appserver.server_instance_id.*,0)}' --region us-east-2"
- }
-provisioner "local-exec" {
- command = "aws ec2 wait instance-status-ok --instance-ids '${element(module.Webserver.server_instance_id.*,1)}'"
  }
 provisioner "local-exec" {
  command = "aws ec2 wait instance-status-ok --instance-ids '${element(module.Webserver.server_instance_id.*,0)}'"
