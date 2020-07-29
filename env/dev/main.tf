@@ -12,6 +12,7 @@ terraform {
 resource "aws_security_group" "allow_ssh" {
   name = "sg_Ansible"
   description = "Allow ssh inbound traffic"
+  vpc_id = var.vpcid
   ingress {
       from_port = 22
       to_port = 22
