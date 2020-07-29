@@ -20,16 +20,16 @@ resource "aws_instance" "cZServers" {
     Name  = "${var.instance_tags}-${count.index + 1}"
   }
 
-  key_name = var.key_name
- # provisioner "file" {
- #   source      = "/home/vidya/srimul.pem"
- #   destination = "/tmp/srimul.pem"
- # }
- # connection {
- #   host     = self.public_ip
- #   type     = "ssh"
- #   user     = "ubuntu"
- #   password = ""
- #   private_key = "${file("~/srimul.pem")}"
-#}
+ key_name = var.key_name
+ provisioner "file" {
+   source      = "/home/ubuntu/mksv_k8s.pem"
+   destination = "/tmp/mksv_k8s.pem"
+ }
+  connection {
+   host     = self.public_ip
+  type     = "ssh"
+  user     = "ubuntu"
+  password = ""
+  private_key = "${file("~/mksv_k8s.pem")}"
+}
 }
