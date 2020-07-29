@@ -28,7 +28,7 @@ variable "instance_tags" {
   default = ["Nginx-Webserver", "Tomcat-Appserver"]
 }
 variable "vpcid" {
-  default = vpc-0b65e78b2f0842a0a
+  default = "vpc-0b65e78b2f0842a0a"
   }
 variable "security_group" {
   default = "sg-0aaa3aac86f3cdc08"
