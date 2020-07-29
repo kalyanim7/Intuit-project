@@ -15,6 +15,7 @@ resource "aws_instance" "cZServers" {
   count = var.instance_count
   vpc_security_group_ids = ["${var.vpc_security_group_ids}"]
   subnet_id = var.subnet_id
+  associate_public_ip_address = true
   tags = {
     Name  = "${var.instance_tags}-${count.index + 1}"
   }
