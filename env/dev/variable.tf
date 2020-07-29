@@ -32,11 +32,11 @@ variable "security_group" {
   description = "Security groups for the instance"
 }
 variable "websubnet" {
-  default =""
+  default = "subnet-0d5acf536cda4d943"
   }
 # Host variables
 variable "appsubnet" {
-  default=""
+  default= "subnet-0dbbd4d635dd7cb21"
   }
 variable "hostinstance_count" {
 default = "1"
