@@ -20,6 +20,12 @@ resource "aws_security_group" "allow_ssh" {
       cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
+    from_port = 8
+    to_port = 0
+    protocol = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
       from_port = 443
       to_port = 443
       protocol = "tcp"
@@ -38,7 +44,7 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-module "k8sMaster" {
+module "webserver" {
   source = "../../modules/ec2"
   amiid = "${lookup(var.amiid, var.region)}"
   instance_type = var.instance_type
@@ -53,10 +59,9 @@ module "k8sMaster" {
  }
 
 output "master_public_ip" {
- #value = "${module.k8sMaster.k8s_public_ip}"
-  value = "${formatlist("%v", module.k8sMaster.*.k8s_public_ip)}"
+   value = "${formatlist("%v", module.webserver.*.server_public_ip)}"
 }
-module "k8shost" {
+module "Appserver" {
   source = "../../modules/ec2"
   amiid = "${lookup(var.amiid, var.region)}"
   instance_type = var.hostinstance_type
@@ -70,8 +75,7 @@ module "k8shost" {
  }
 
 output "public_ip" {
- #value = "${module.k8shost.k8s_public_ip}"
-  value = "${formatlist("%v", module.k8shost.*.k8s_public_ip)}"
+   value = "${formatlist("%v", module.Appserver.*.server_public_ip)}"
 }
 
 resource "null_resource" "myPublicIps" {
@@ -81,25 +85,25 @@ provisioner "local-exec" {
 command =  "echo 'Webserver' > hosts1"
 }
 provisioner "local-exec" {
- command = "echo '${element(module.k8sMaster.k8s_public_ip.*,0)}' >> hosts1"
+ command = "echo '${element(module.webserver.server_public_ip.*,0)}' >> hosts1"
+ }
+provisioner "local-exec" {
+ command = "echo '${element(module.webserver.server_public_ip.*,1)}' >> hosts1"
  }
 provisioner "local-exec" {
     command=  "echo 'Appserver' >> hosts1"
 }
 provisioner "local-exec" {
-     command = "echo '${element(module.k8shost.k8s_public_ip.*,0)}' >> hosts1"
+     command = "echo '${element(module.Appserver.server_public_ip.*,0)}' >> hosts1"
  }
-#provisioner "local-exec" {
-# command = "echo '${element(module.k8shost.k8s_public_ip.*,1)}' >> hosts1"
-# }
 provisioner "local-exec" {
- command = "aws ec2 wait instance-status-ok --instance-ids '${element(module.k8shost.k8s_instance_id.*,0)}' --region us-east-2"
+ command = "aws ec2 wait instance-status-ok --instance-ids '${element(module.Appserver.server_instance_id.*,0)}' --region us-east-2"
  }
-#provisioner "local-exec" {
-# command = "aws ec2 wait instance-status-ok --instance-ids '${element(module.k8shost.k8s_instance_id.*,1)}'"
-# }
 provisioner "local-exec" {
- command = "aws ec2 wait instance-status-ok --instance-ids '${element(module.k8sMaster.k8s_instance_id.*,0)}'"
+ command = "aws ec2 wait instance-status-ok --instance-ids '${element(module.Webserver.server_instance_id.*,1)}'"
+ }
+provisioner "local-exec" {
+ command = "aws ec2 wait instance-status-ok --instance-ids '${element(module.Webserver.server_instance_id.*,0)}'"
  }
    
 }
