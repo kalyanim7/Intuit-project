@@ -2,10 +2,10 @@ provider "aws" {
    region = "us-east-2"
 }
 ## This is a way to return values from a modules
-output "k8s_public_ip" {
+output "server_public_ip" {
   value = "${aws_instance.cZServers.*.public_ip}"
 }
-output "k8s_instance_id" {
+output "server_instance_id" {
   value = "${aws_instance.cZServers.*.id}"
 }
 
