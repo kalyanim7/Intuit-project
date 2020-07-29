@@ -10,7 +10,7 @@ terraform {
   }
 }
 resource "aws_security_group" "allow_ssh" {
-  name = "sg_Ansible"
+  name = "sg_Intuit"
   description = "Allow ssh inbound traffic"
   vpc_id = var.vpcid
   ingress {
