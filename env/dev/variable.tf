@@ -12,14 +12,14 @@ variable "amiid" {
 }
 #Webserver instance count
 variable "instance_count" {
-default = "2"
+default = "1"
 }
 #k8s Master instance type
 variable "instance_type" {
   default = "t2.micro"
 }
 variable "key_name" {
-  default = "srimul"
+  default = "mksv_k8s"
   description = "the ssh key to be used for the EC2 instance"
 }
 
@@ -28,18 +28,18 @@ variable "instance_tags" {
   default = ["Nginx-Webserver", "Tomcat-Appserver"]
 }
 variable "vpcid" {
-  default = "vpc-0b65e78b2f0842a0a"
+  default = "vpc-0b4031dfce70dfd8d"
   }
 variable "security_group" {
   default = "sg-0aaa3aac86f3cdc08"
   description = "Security groups for the instance"
 }
 variable "websubnet" {
-  default = "subnet-0d5acf536cda4d943"
+  default = "subnet-001b3cb5196755db5"
   }
 # Appserver variables
 variable "appsubnet" {
-  default= "subnet-0dbbd4d635dd7cb21"
+  default= "subnet-0451c37c76afc5db8"
   }
 variable "hostinstance_count" {
 default = "1"
